@@ -23,6 +23,7 @@ void main() {
   print(studentThree.name);
 
   print(Student.noOfObjects);
+  print(Student.getClassName());
 }
 
 // class
@@ -42,6 +43,10 @@ class Student {
     age = a;
     this.address = address;
     noOfObjects += 1;
+  }
+
+  static String getClassName() {
+    return 'This is student class';
   }
 
   // method
