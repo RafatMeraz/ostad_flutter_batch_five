@@ -1,5 +1,6 @@
 /// Parent/super/base class
 /// child class
+/// childClassName extends parentClass
 class UniversityStudent extends Person {
   late String universityName;
   late String department;
