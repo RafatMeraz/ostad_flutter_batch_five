@@ -1,4 +1,10 @@
 void main() {
+  late String name;
+
+  name = 'dfd';
+
+  print(name);
+
   int? a;
   print(a);
 
