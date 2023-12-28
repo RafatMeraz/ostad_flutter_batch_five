@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbbc2961-fdb6-4e8a-a64c-dcbe18cfa741" name="Changes" comment="Add class-1 code">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/ostad_flutter_batch_five.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
-    </list>
+    <list default="true" id="d5c49170-6d79-4aff-bfd2-6d5c1730945b" name="Default Changelist" comment="class 6 codes added&#10;- while loop&#10;- functions&#10;- switch-case" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" show_ignored="true" />
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -27,69 +26,122 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="D:\Flutter\ostad_flutter_batch_five\.idea" />
+      </set>
+    </option>
   </component>
-  <component name="ProjectId" id="2XRhLJvmGhMfJSfr4E7xyeFs4ev" />
+  <component name="ProjectId" id="2XlQNNqxv8DQ2dZLlxKmN6j06W6" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Codes/flutter/ostad_flutter_batch_five&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "D:/Flutter/ostad_flutter_batch_five/live_class_project",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="ostad_flutter_batch_five" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+}]]></component>
+  <component name="RunManager" selected="Dart Command Line App.functions.dart">
+    <configuration name="functions.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/basic_dart/functions.dart" />
+      <option name="workingDirectory" value="$PROJECT_DIR$/basic_dart" />
+      <method v="2" />
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="ostad_flutter_batch_five" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="looping.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/basic_dart/looping.dart" />
+      <option name="workingDirectory" value="$PROJECT_DIR$/basic_dart" />
+      <method v="2" />
     </configuration>
+    <configuration name="switch-case.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/basic_dart/switch-case.dart" />
+      <option name="workingDirectory" value="$PROJECT_DIR$/basic_dart" />
+      <method v="2" />
+    </configuration>
+    <configuration name="type-conversion.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/basic_dart/type-conversion.dart" />
+      <option name="workingDirectory" value="$PROJECT_DIR$/basic_dart" />
+      <method v="2" />
+    </configuration>
+    <configuration name="while-loop.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/basic_dart/while-loop.dart" />
+      <option name="workingDirectory" value="$PROJECT_DIR$/basic_dart" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Dart Command Line App.functions.dart" />
+        <item itemvalue="Dart Command Line App.while-loop.dart" />
+        <item itemvalue="Dart Command Line App.switch-case.dart" />
+        <item itemvalue="Dart Command Line App.looping.dart" />
+        <item itemvalue="Dart Command Line App.type-conversion.dart" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="fbbc2961-fdb6-4e8a-a64c-dcbe18cfa741" name="Changes" comment="" />
-      <created>1698597745472</created>
+      <changelist id="d5c49170-6d79-4aff-bfd2-6d5c1730945b" name="Default Changelist" comment="" />
+      <created>1699201145624</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1698597745472</updated>
+      <updated>1699201145624</updated>
+      <workItem from="1699201146831" duration="1682000" />
+      <workItem from="1699373505836" duration="6000" />
     </task>
-    <task id="LOCAL-00001" summary="Add class-1 code">
-      <created>1698601490151</created>
+    <task id="LOCAL-00001" summary="class 4 codes added&#10;- constant&#10;- if else&#10;- operators">
+      <created>1699205905848</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1698601490151</updated>
+      <updated>1699205905848</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="class 5 codes added&#10;- for loop&#10;- strings&#10;- type-conversion">
+      <created>1699378712308</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1699378712308</updated>
+    </task>
+    <task id="LOCAL-00003" summary="class 6 codes added&#10;- while loop&#10;- functions&#10;- switch-case">
+      <created>1699551919600</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1699551919600</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add class-1 code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add class-1 code" />
+    <MESSAGE value="class 4 codes added&#10;- constant&#10;- if else&#10;- operators" />
+    <MESSAGE value="class 5 codes added&#10;- for loop&#10;- strings&#10;- type-conversion" />
+    <MESSAGE value="class 6 codes added&#10;- while loop&#10;- functions&#10;- switch-case" />
+    <option name="LAST_COMMIT_MESSAGE" value="class 6 codes added&#10;- while loop&#10;- functions&#10;- switch-case" />
   </component>
 </project>
