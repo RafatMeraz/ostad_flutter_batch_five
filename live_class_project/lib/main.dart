@@ -1,102 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+/// KISS - Keep It Simple, Stupid
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  @override
+  const MyApp({super.key});
 
+  @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   title: 'Todo app',
-    //   home: HomeScreen(),
-    //   theme: ThemeData(
-    //     // primarySwatch: MaterialColor(
-    //     //   0xFF2C0432FF,
-    //     //   const {
-    //     //     50: const Color(0xFF2C0432FF),
-    //     //     100: const Color(0xFF2C0432FF),
-    //     //     200: const Color(0xFF2C0432FF),
-    //     //     300: const Color(0xFF2C0432FF),
-    //     //     400: const Color(0xFF2C0432FF),
-    //     //     500: const Color(0xFF2C0432FF),
-    //     //     600: const Color(0xFF2C0432FF),
-    //     //     700: const Color(0xFF2C0432FF),
-    //     //     800: const Color(0xFF2C0432FF),
-    //     //     900: const Color(0xFF2C0432FF)
-    //     //   },
-    //     // ),
-    //     // primaryColor: Colors.purple,
-    //     // primaryColorDark: Colors.pink,
-    //     // primaryColorLight: Colors.pink.shade500,
-    //     brightness: Brightness.light,
-    //     elevatedButtonTheme: ElevatedButtonThemeData(
-    //       style: ElevatedButton.styleFrom(
-    //           shape: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(0)
-    //           ),
-    //           backgroundColor: Colors.green
-    //       ),
-    //     ),
-    //     scaffoldBackgroundColor: Colors.grey,
-    //     appBarTheme: AppBarTheme(
-    //       backgroundColor: Colors.purple,
-    //       titleTextStyle: TextStyle(
-    //         fontWeight: FontWeight.bold,
-    //         fontSize: 18,
-    //       ),
-    //       centerTitle: true
-    //     ),
-    //     // TODO - Set floating action button theme data
-    //   ),
-    //   darkTheme: ThemeData(
-    //     brightness: Brightness.dark,
-    //     primarySwatch: Colors.pink,
-    //     // elevatedButtonTheme: ElevatedButtonThemeData(
-    //     //   style: ElevatedButton.styleFrom(
-    //     //       shape: RoundedRectangleBorder(
-    //     //           borderRadius: BorderRadius.circular(30),
-    //     //         side: BorderSide(width: 2, color: Colors.red)
-    //     //       ),
-    //     //       backgroundColor: Colors.green
-    //     //   ),
-    //     // ),
-    //   ),
-    //   themeMode: ThemeMode.light,
-    // );
-    return CupertinoApp(
-      home: CupertinoHomeScreen(),
+    return const MaterialApp(
+      home: HomeScreen(),
     );
   }
 }
 
-class CupertinoHomeScreen extends StatelessWidget {
-  const CupertinoHomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Home'),
-        backgroundColor: Colors.grey,
-        leading: Icon(CupertinoIcons.home, size: 18,)
-      ),
-      child: Column(
-        children: [
-          CupertinoButton(child: Text('Tap here'), onPressed: () {}),
-          CupertinoButton.filled(child: Text('Tap here'), onPressed: () {}),
-          ElevatedButton(child: Text('Tap here'), onPressed: () {}),
-        ],
-      ),
-    );
-  }
-}
-
+/// Push
+/// Pop
+/// pushReplacement
+/// PushAndRemoveUntil
+/// Data passing - in and back
 
 class HomeScreen extends StatelessWidget {
-  TextEditingController searchTextFieldController = TextEditingController();
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -104,31 +32,126 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {}, child: Text('Tap here'),),
-          ElevatedButton( style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0)
-              ),
-              backgroundColor: Colors.white,
-            textStyle: TextStyle(
-              color: Colors.white
-            )
-          ),
-            onPressed: () {}, child: Text('Tap here'),),
-          ElevatedButton(onPressed: () {}, child: Text('Tap here'),),
-          ElevatedButton(onPressed: () {}, child: Text('Tap here'),),
-          ElevatedButton(onPressed: () {}, child: Text('Tap here'),),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                /// Route = Screen
+                /// Navigator - 1,2
 
-        ],
+                /// Route 1(Current screen) -> Route 2 (Settings Screen)
+                /// Step 1- Navigator - push
+                /// Step 2 - Context (current route)
+                /// Step 3 - Convert SettingsScreen as Route with MaterialPageRoute
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(userName: 'Saira',),
+                  ),
+                ).then((value) {
+                  print(value);
+                });
+              },
+              child: Text('Go to Settings'),
+            )
+          ],
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key, required this.userName, this.age});
+
+  final String userName;
+  final int? age;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Settings'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(userName),
+            Text(age.toString()),
+            ElevatedButton(
+              onPressed: () {
+                /// Back to previous screen
+                Navigator.pop(context, {
+                  'Saira' : 12
+                });
+              },
+              child: Text('Back to Home'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                );
+              },
+              child: Text('Go to Profile'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                );
+              },
+              child: Text('Go to Profile by replace'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                /// Back to previous screen
+                Navigator.pop(context);
+              },
+              child: Text('Back to Settings'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                /// Back to previous screen
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false,
+                );
+              },
+              child: Text('Go to Home'),
+            ),
+          ],
+        ),
       ),
     );
   }
