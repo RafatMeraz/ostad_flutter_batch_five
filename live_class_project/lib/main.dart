@@ -11,148 +11,120 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeScreen(),
+    return MaterialApp(
+      home: SplashScreen(),
     );
   }
 }
 
-/// Push
-/// Pop
-/// pushReplacement
-/// PushAndRemoveUntil
-/// Data passing - in and back
+/// Mutable
+/// Immutable
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+// Widget - two types
+// Stateless - Immutable
+// Stateful - Mutable
+
+/// Stateful - two component
+/// Widget
+/// State
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(),
+              ),
+            );
+          },
+          child: Text('Go to Home'),
+        ),
+      ),
+    );
+  }
+}
+
+
+class HomeScreen extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    print('init State');
+    /// on start a screen
+    /// 1
+  }
+
+  @override
+  void didChangeDependencies() {
+    print('didChangeDependencies');
+    ///2
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeScreen oldWidget) {
+    /// 4
+    print('onUpdateWidget');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
+    /// 3
+    print('build');
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                /// Route = Screen
-                /// Navigator - 1,2
+        child: Text(count.toString(), style: TextStyle(
+          fontSize: 32,
+        ),),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          count = count + 1;
+          print(count);
 
-                /// Route 1(Current screen) -> Route 2 (Settings Screen)
-                /// Step 1- Navigator - push
-                /// Step 2 - Context (current route)
-                /// Step 3 - Convert SettingsScreen as Route with MaterialPageRoute
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SettingsScreen(userName: 'Saira',),
-                  ),
-                ).then((value) {
-                  print(value);
-                });
-              },
-              child: Text('Go to Settings'),
-            )
-          ],
-        ),
+          setState(() {});
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
-}
-
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key, required this.userName, this.age});
-
-  final String userName;
-  final int? age;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(userName),
-            Text(age.toString()),
-            ElevatedButton(
-              onPressed: () {
-                /// Back to previous screen
-                Navigator.pop(context, {
-                  'Saira' : 12
-                });
-              },
-              child: Text('Back to Home'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileScreen(),
-                  ),
-                );
-              },
-              child: Text('Go to Profile'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileScreen(),
-                  ),
-                );
-              },
-              child: Text('Go to Profile by replace'),
-            ),
-          ],
-        ),
-      ),
-    );
+  void deactivate() {
+    super.deactivate();
+    print('deactived');
   }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                /// Back to previous screen
-                Navigator.pop(context);
-              },
-              child: Text('Back to Settings'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                /// Back to previous screen
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (route) => false,
-                );
-              },
-              child: Text('Go to Home'),
-            ),
-          ],
-        ),
-      ),
-    );
+  void dispose() {
+    print('dispose');
+    super.dispose();
   }
 }
