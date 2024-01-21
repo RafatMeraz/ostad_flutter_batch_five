@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:live_class_project/water_consume.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,142 +10,124 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _numberOneTEController = TextEditingController();
-  final TextEditingController _numberTwoTEController = TextEditingController();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  double _result = 0;
+  List<WaterConsume> waterConsumeList = [];
+  final TextEditingController _noOfGlassesTEController =
+      TextEditingController(text: '1');
+  final TextEditingController _noteTEController =
+      TextEditingController(text: 'Morning');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.purple,
         title: const Text(
-          'Sum Calculator',
+          'Water Tracker',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
+        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _numberOneTEController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(hintText: 'Number One'),
-                validator: (String? value) {
-                  String v = value ?? '';
-                  if (v.isEmpty) {
-                    return 'Enter number one'; // invalid
-                  }
-                  return null; //  valid
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                controller: _numberTwoTEController,
-                decoration: const InputDecoration(hintText: 'Number Two'),
-                validator: (String? value) {
-                  String v = value ?? '';
-                  if (v.isEmpty) {
-                    return 'Enter number two';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Row(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          double numOne = double.tryParse(
-                                  _numberOneTEController.text.trim()) ??
-                              0;
-                          double numTwo = double.tryParse(
-                                  _numberTwoTEController.text.trim()) ??
-                              0;
-                          double result = add(numOne, numTwo);
-                          _result = result;
-                          setState(() {});
-                        }
-                      },
-                      child: const Text('Add'),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(100),
+                    onTap: () {
+                      if (_noOfGlassesTEController.text.trim().isEmpty) {
+                        _noOfGlassesTEController.text = '1';
+                      }
+                      final noOfGlasses = _noOfGlassesTEController.text.trim();
+                      int value = int.tryParse(noOfGlasses) ?? 1;
+                      // waterConsumeList.add(WaterConsume(
+                      //     value, DateTime.now(), _noteTEController.text));
+                      waterConsumeList.insert(
+                          0,
+                          WaterConsume(
+                              value, DateTime.now(), _noteTEController.text));
+                      setState(() {});
+                    },
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Colors.amber,
+                          border: Border.all(
+                            color: Colors.deepOrange,
+                            width: 4,
+                          ),
+                          borderRadius: BorderRadius.circular(100)),
+                      child: const Text(
+                        'Tap to Add',
+                        style: TextStyle(
+                            // color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                   const SizedBox(
-                    width: 8,
+                    height: 16,
                   ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          double numOne = double.tryParse(
-                                  _numberOneTEController.text.trim()) ??
-                              0;
-                          double numTwo = double.tryParse(
-                                  _numberTwoTEController.text.trim()) ??
-                              0;
-                          double result = subs(numOne, numTwo);
-                          _result = result;
-                          setState(() {});
-                        }
-                      },
-                      child: const Text('Sub'),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: clear,
-                      child: const Text('Clear'),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 50,
+                        child: TextField(
+                          controller: _noOfGlassesTEController,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                          controller: _noteTEController,
+                          keyboardType: TextInputType.text,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              Text(
-                'Result : $_result',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ],
-          ),
+            ),
+            ListView.builder(
+                itemCount: waterConsumeList.length,
+                shrinkWrap: true,
+                primary: false,
+                // reverse: true,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      child: Text(waterConsumeList[index].noOfGlass.toString()),
+                    ),
+                    title: Text(waterConsumeList[index].note),
+                    subtitle: Text(
+                        DateFormat.yMEd().add_jms().format(waterConsumeList[index].time),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: () {
+                        waterConsumeList.removeAt(index);
+                        setState(() {});
+                      },
+                    ),
+                  );
+                })
+          ],
         ),
       ),
     );
-  }
-
-  void clear() {
-    _numberOneTEController.clear();
-    _numberTwoTEController.clear();
-    _result = 0;
-    setState(() {});
-  }
-
-  double add(double numOne, double numTwo) {
-    return numOne + numTwo;
-  }
-
-  double subs(double numOne, double numTwo) {
-    return numOne - numTwo;
   }
 }
