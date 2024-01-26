@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:live_class_project/todo.dart';
 
 class EditTodoScreen extends StatefulWidget {
-  const EditTodoScreen({super.key});
+  const EditTodoScreen({super.key, required this.todo});
+
+  final Todo todo;
 
   @override
   State<EditTodoScreen> createState() => _EditTodoScreenState();
@@ -10,7 +13,15 @@ class EditTodoScreen extends StatefulWidget {
 class _EditTodoScreenState extends State<EditTodoScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleTEController = TextEditingController();
-  final TextEditingController _descriptionTEController = TextEditingController();
+  late final TextEditingController _descriptionTEController =
+      TextEditingController(text: widget.todo.description);
+
+  @override
+  void initState() {
+    super.initState();
+    _titleTEController.text = widget.todo.title;
+    _descriptionTEController.text = widget.todo.description;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +72,9 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.pop(context);
+                      Todo todo = Todo(_titleTEController.text.trim(),
+                          _descriptionTEController.text.trim(), DateTime.now());
+                      Navigator.pop(context, todo);
                     }
                   },
                   child: const Text('Update'),
