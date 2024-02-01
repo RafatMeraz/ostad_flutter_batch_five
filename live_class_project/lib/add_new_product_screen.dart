@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class AddNewProductScreen extends StatefulWidget {
   const AddNewProductScreen({super.key});
@@ -15,6 +18,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   final TextEditingController _totalPriceTEController = TextEditingController();
   final TextEditingController _imageTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _addNewProductInProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +124,19 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
-                    },
-                    child: const Text('Add'),
+                  child: Visibility(
+                    visible: _addNewProductInProgress == false,
+                    replacement: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          createNewProduct();
+                        }
+                      },
+                      child: const Text('Add'),
+                    ),
                   ),
                 )
               ],
@@ -133,5 +145,50 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
         ),
       ),
     );
+  }
+  
+  Future<void> createNewProduct() async {
+    _addNewProductInProgress = true;
+    setState(() {});
+    Uri uri = Uri.parse('https://crud.teamrabbil.com/api/v1/CreateProduct');
+    Map<String, dynamic> params = {
+      "Img": _imageTEController.text.trim(),
+      "ProductCode": _codeTEController.text.trim(),
+      "ProductName": _nameTEController.text.trim(),
+      "Qty": _quantityTEController.text.trim(),
+      "TotalPrice": _totalPriceTEController.text.trim(),
+      "UnitPrice": _unitPriceTEController.text.trim()
+    };
+    Response response = await post(
+      uri,
+      body: jsonEncode(params),
+      headers: {'Content-type': 'application/json'},
+    );
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      _unitPriceTEController.clear();
+      _imageTEController.clear();
+      _nameTEController.clear();
+      _codeTEController.clear();
+      _quantityTEController.clear();
+      _totalPriceTEController.clear();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Product created successfully')),
+      );
+    }
+    _addNewProductInProgress = false;
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _nameTEController.dispose();
+    _totalPriceTEController.dispose();
+    _unitPriceTEController.dispose();
+    _codeTEController.dispose();
+    _imageTEController.dispose();
+    _quantityTEController.dispose();
+    super.dispose();
   }
 }
