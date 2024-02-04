@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:live_class_project/product.dart';
 
 class EditProductScreen extends StatefulWidget {
-  const EditProductScreen({super.key});
+  const EditProductScreen({super.key, required this.product});
+
+  final Product product;
 
   @override
   State<EditProductScreen> createState() => _EditProductScreenState();
+
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
@@ -15,6 +22,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final TextEditingController _totalPriceTEController = TextEditingController();
   final TextEditingController _imageTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _updateProductInProgress = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameTEController.text = widget.product.productName ?? '';
+    _codeTEController.text = widget.product.productCode ?? '';
+    _unitPriceTEController.text = widget.product.unitPrice ?? '';
+    _quantityTEController.text = widget.product.quantity ?? '';
+    _totalPriceTEController.text = widget.product.totalPrice ?? '';
+    _imageTEController.text = widget.product.image ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +139,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
-                    },
-                    child: const Text('Update'),
+                  child: Visibility(
+                    visible: _updateProductInProgress == false,
+                    replacement: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _updateProduct();
+                        }
+                      },
+                      child: const Text('Update'),
+                    ),
                   ),
                 )
               ],
@@ -133,5 +160,61 @@ class _EditProductScreenState extends State<EditProductScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _updateProduct() async {
+    _updateProductInProgress = true;
+    setState(() {});
+    Uri url = Uri.parse('https://crud.teamrabbil.com/api/v1/UpdateProduct/${widget.product.id}');
+    Product product = Product(
+      id:  widget.product.id,
+      image: _imageTEController.text.trim(),
+      productCode: _codeTEController.text.trim(),
+      productName: _nameTEController.text.trim(),
+      quantity: _quantityTEController.text.trim(),
+      unitPrice: _unitPriceTEController.text.trim(),
+      totalPrice: _totalPriceTEController.text.trim(),
+    );
+    //   "Img": _imageTEController.text.trim(),
+    //   "ProductCode": _codeTEController.text.trim(),
+    //   "ProductName": _nameTEController.text.trim(),
+    //   "Qty": _quantityTEController.text.trim(),
+    //   "TotalPrice": _totalPriceTEController.text.trim(),
+    //   "UnitPrice": _unitPriceTEController.text.trim(),
+    //   "_id": widget.product.id,
+    // };
+    print(product.toJson());
+    final Response response = await post(url,
+        body: jsonEncode(product.toJson()),
+        headers: {'Content-type': 'application/json'});
+    if (response.statusCode == 200) {
+      final decodedData = jsonDecode(response.body);
+      if (decodedData['status'] == 'success') {
+        Navigator.pop(context, true);
+      } else {
+        _updateProductInProgress = true;
+        setState(() {});
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Product update failed! Try again.')));
+      }
+    } else {
+      _updateProductInProgress = true;
+      setState(() {});
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Product update failed! Try again.')));
+    }
+  }
+
+  @override
+  void dispose() {
+    _imageTEController.dispose();
+    _totalPriceTEController.dispose();
+    _unitPriceTEController.dispose();
+    _totalPriceTEController.dispose();
+    _nameTEController.dispose();
+    _codeTEController.dispose();
+    super.dispose();
   }
 }

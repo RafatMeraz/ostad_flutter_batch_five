@@ -17,7 +17,7 @@ class ProductListScreen extends StatefulWidget {
 
 class _ProductListScreenState extends State<ProductListScreen> {
   List<Product> productList = [];
-  bool _getProductListInProgress = false;
+  bool _inProgress = false;
 
   @override
   void initState() {
@@ -36,55 +36,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
           getProductListFromApi();
         },
         child: Visibility(
-          visible: _getProductListInProgress == false,
+          visible: _inProgress == false,
           replacement: const Center(child: CircularProgressIndicator()),
           child: ListView.builder(
             itemCount: productList.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(productList[index].image ?? ''),
-                ),
-                title: Text(productList[index].productName ?? 'Unknown'),
-                subtitle: Wrap(
-                  spacing: 16,
-                  children: [
-                    Text('Product code ${productList[index].productCode ?? 'Unknown'}'),
-                    Text('Unit price ${productList[index].unitPrice ?? 'Unknown'}'),
-                    Text('Total price ${productList[index].totalPrice ?? 'Unknown'}'),
-                    Text('Quantity ${productList[index].quantity ?? 'Unknown'}'),
-                  ],
-                ),
-                trailing: PopupMenuButton<PopupMenuType>(
-                  onSelected: onTapPopUpMenuButton,
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: PopupMenuType.edit,
-                      child: Row(
-                        children: [
-                          Icon(Icons.edit),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text('Edit'),
-                        ],
-                      ),
-                    ),
-                    const PopupMenuItem(
-                      value: PopupMenuType.delete,
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete_outline),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text('Delete'),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              return _getProductListTile(productList[index]);
             },
           ),
         ),
@@ -104,23 +61,76 @@ class _ProductListScreenState extends State<ProductListScreen> {
     );
   }
 
-  void onTapPopUpMenuButton(PopupMenuType type) {
+  // Method Extraction
+  Widget _getProductListTile(Product product) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(product.image ?? ''),
+      ),
+      title: Text(product.productName ?? 'Unknown'),
+      subtitle: Wrap(
+        spacing: 16,
+        children: [
+          Text('Product code ${product.productCode ?? 'Unknown'}'),
+          Text('Unit price ${product.unitPrice ?? 'Unknown'}'),
+          Text('Total price ${product.totalPrice ?? 'Unknown'}'),
+          Text('Quantity ${product.quantity ?? 'Unknown'}'),
+        ],
+      ),
+      trailing: PopupMenuButton<PopupMenuType>(
+        onSelected: (type) => onTapPopUpMenuButton(type, product),
+        itemBuilder: (context) => [
+          const PopupMenuItem(
+            value: PopupMenuType.edit,
+            child: Row(
+              children: [
+                Icon(Icons.edit),
+                SizedBox(
+                  width: 8,
+                ),
+                Text('Edit'),
+              ],
+            ),
+          ),
+          const PopupMenuItem(
+            value: PopupMenuType.delete,
+            child: Row(
+              children: [
+                Icon(Icons.delete_outline),
+                SizedBox(
+                  width: 8,
+                ),
+                Text('Delete'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> onTapPopUpMenuButton(PopupMenuType type, Product product) async {
     switch (type) {
       case PopupMenuType.edit:
-        Navigator.push(
+        final result = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const EditProductScreen(),
+            builder: (context) => EditProductScreen(
+              product: product,
+            ),
           ),
         );
+        if (result != null && result == true) {
+          getProductListFromApi();
+        }
         break;
       case PopupMenuType.delete:
-        _showDeleteDialog();
+        _showDeleteDialog(product.id!);
         break;
     }
   }
 
-  void _showDeleteDialog() {
+  void _showDeleteDialog(String productId) {
     showDialog(
         context: context,
         builder: (context) {
@@ -136,6 +146,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   child: const Text('Cancel')),
               TextButton(
                 onPressed: () {
+                  _deleteProduct(productId);
                   Navigator.pop(context);
                 },
                 child: const Text(
@@ -149,7 +160,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Future<void> getProductListFromApi() async {
-    _getProductListInProgress = true;
+    _inProgress = true;
     setState(() {});
     // Step 1 - Make URI
     Uri uri = Uri.parse('https://crud.teamrabbil.com/api/v1/ReadProduct');
@@ -170,7 +181,26 @@ class _ProductListScreenState extends State<ProductListScreen> {
         }
       }
     }
-    _getProductListInProgress = false;
+    _inProgress = false;
+    setState(() {});
+  }
+
+  Future<void> _deleteProduct(String productId) async {
+    _inProgress = true;
+    setState(() {});
+    Uri uri = Uri.parse('https://crud.teamrabbil.com/api/v1/DeleteProduct/$productId');
+    Response response = await get(uri);
+    print(response);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      // getProductListFromApi();
+      productList.removeWhere((element) => element.id == productId);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Product deletion failed! Try again')));
+    }
+    _inProgress = false;
     setState(() {});
   }
 }
