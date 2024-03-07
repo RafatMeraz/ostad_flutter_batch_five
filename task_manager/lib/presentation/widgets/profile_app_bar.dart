@@ -22,17 +22,17 @@ PreferredSizeWidget get profileAppBar {
           const SizedBox(
             width: 12,
           ),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Rabbil Hasan',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  AuthController.userData?.fullName ?? '',
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Text(
-                  'rabbil@gmail.com',
-                  style: TextStyle(
+                  AuthController.userData?.email ?? '',
+                  style: const TextStyle(
                       fontSize: 12,
                       color: Colors.white,
                       fontWeight: FontWeight.w400),
