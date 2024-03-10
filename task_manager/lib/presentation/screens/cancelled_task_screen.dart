@@ -19,7 +19,7 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
         child: ListView.builder(
           itemCount: 5,
           itemBuilder: (context, index) {
-            return const TaskCard();
+            // return const TaskCard();
           },
         ),
       ),
