@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CounterController _counterController = Get.put(CounterController());
+  final CounterController _counterController = Get.find<CounterController>();
 
   @override
   Widget build(BuildContext context) {

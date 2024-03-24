@@ -11,7 +11,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final CounterController _counterController = Get.put(CounterController());
+  // final CounterController _counterController = Get.find<CounterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Obx(() => Text('${_counterController.counter}')),
+            // Obx(() => Text('${_counterController.counter}')),
+            GetBuilder<CounterController>(
+                builder: (controller) {
+              return Text('${controller.counter}');
+            }),
             ElevatedButton(
               onPressed: () {
                 // REPLACE
@@ -39,7 +43,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: const Text('Back')),
             ElevatedButton(
               onPressed: () {
-                _counterController.increment();
+                // _counterController.increment();
+                Get.find<CounterController>().increment();
               },
               child: const Text('Increment'),
             ),
