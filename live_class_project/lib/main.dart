@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:live_class_project/counter_controller.dart';
-import 'package:live_class_project/home_screen.dart';
+import 'package:live_class_project/movie_list_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -11,26 +9,20 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const CounterApp());
+  runApp(const MoviesApp());
 }
 
-class CounterApp extends StatelessWidget {
-  const CounterApp({super.key});
+class MoviesApp extends StatelessWidget {
+  const MoviesApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: const HomeScreen(),
-      initialBinding: ControllerBinder(),
+    return const MaterialApp(
+      home: MovieListScreen(),
     );
   }
 }
 
-class ControllerBinder extends Bindings {
-
-  @override
-  void dependencies() {
-    // Get.put(CounterController());
-    Get.lazyPut(() => CounterController());
-  }
-}
+// TODO: 1. set up firebase storage
+// TODO: 2. pick new image/videos from gallery and put into firebase storage
+// TODO: 3. show list of images from storage in gridview
