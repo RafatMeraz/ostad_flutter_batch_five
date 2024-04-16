@@ -1,17 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:live_class_project/firebase_messaging.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'firebase_options.dart';
-import 'ongoing_matches_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseMessagingService.initialize();
-  print(await FirebaseMessagingService.getFCMToken());
   runApp(const MoviesApp());
 }
 
@@ -21,7 +18,31 @@ class MoviesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: OngoingMatchesScreen(),
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
+      body: GoogleMap(
+        zoomControlsEnabled: true,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(23.744287065983727, 90.3841376276092),
+        ),
+      ),
     );
   }
 }

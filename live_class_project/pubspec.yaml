@@ -20,6 +20,7 @@ dependencies:
   cloud_firestore: ^4.15.8
   firebase_storage: ^11.6.9
   firebase_messaging: ^14.7.19
+  google_maps_flutter: ^2.5.3
 
 dev_dependencies:
   flutter_test:
