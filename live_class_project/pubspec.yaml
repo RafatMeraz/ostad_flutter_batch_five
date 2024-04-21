@@ -21,6 +21,7 @@ dependencies:
   firebase_storage: ^11.6.9
   firebase_messaging: ^14.7.19
   google_maps_flutter: ^2.5.3
+  geolocator: ^11.0.0
 
 dev_dependencies:
   flutter_test:
