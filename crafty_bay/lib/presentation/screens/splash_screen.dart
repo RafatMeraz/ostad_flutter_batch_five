@@ -1,4 +1,3 @@
-import 'package:crafty_bay/presentation/screens/home_screen.dart';
 import 'package:crafty_bay/presentation/screens/main_bottom_nav_bar_screen.dart';
 import 'package:crafty_bay/presentation/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
