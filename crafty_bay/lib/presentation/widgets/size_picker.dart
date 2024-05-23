@@ -2,10 +2,15 @@ import 'package:crafty_bay/presentation/utility/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SizePicker extends StatefulWidget {
-  const SizePicker({super.key, required this.sizes, required this.onChange});
+  const SizePicker(
+      {super.key,
+      required this.sizes,
+      required this.onChange,
+      this.isRounded = true});
 
   final List<String> sizes;
   final Function(String) onChange;
+  final bool isRounded;
 
   @override
   State<SizePicker> createState() => _SizePickerState();
@@ -31,13 +36,14 @@ class _SizePickerState extends State<SizePicker> {
                 child: Container(
                   margin: const EdgeInsets.only(right: 8),
                   height: 40,
-                  width: 40,
+                  width: widget.isRounded ? 40 : null,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       color:
                           _getSelectedBackgroundColor(index == selectedIndex),
-                      borderRadius: BorderRadius.circular(100),
+                      borderRadius:
+                          BorderRadius.circular(widget.isRounded ? 100 : 8),
                       border: Border.all(
                           color:
                               _getSelectedTextColor(index == selectedIndex))),
