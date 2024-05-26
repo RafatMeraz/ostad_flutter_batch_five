@@ -1,4 +1,6 @@
+import 'package:crafty_bay/data/models/cart_model.dart';
 import 'package:crafty_bay/data/models/product_details_model.dart';
+import 'package:crafty_bay/presentation/state_holders/add_to_cart_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:crafty_bay/presentation/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/widgets/centered_circular_progress_indicator.dart';
@@ -20,6 +22,8 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int _counterValue = 1;
+  String? _selectedColor;
+  String? _selectedSize;
 
   @override
   void initState() {
@@ -47,6 +51,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
           ProductDetailsModel productDetails = productDetailController
               .productDetailsModel;
+          List<String> colors = productDetails.color?.split(',') ?? [];
+          List<String> sizes = productDetails.size?.split(',') ?? [];
+          _selectedSize = sizes.first;
+          _selectedColor = colors.first;
 
           return Column(
             children: [
@@ -87,19 +95,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   fontWeight: FontWeight.w600, fontSize: 16),
                             ),
                             const SizedBox(height: 16),
-                            // ColorPicker(
-                            //   colors: const [
-                            //     Colors.black,
-                            //     Colors.red,
-                            //     Colors.amber,
-                            //     Colors.blue,
-                            //     Colors.purple,
-                            //   ],
-                            //   onChange: (Color selectedColor) {},
-                            // ),
                             SizePicker(
-                              sizes: productDetails.color?.split(',') ?? [],
-                              onChange: (String s) {},
+                              sizes: colors,
+                              onChange: (String s) {
+                                _selectedColor = s;
+                              },
                               isRounded: false,
                             ),
                             const SizedBox(height: 16),
@@ -110,8 +110,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             const SizedBox(height: 16),
                             SizePicker(
-                              sizes: productDetails.size?.split(',') ?? [],
-                              onChange: (String s) {},
+                              sizes: sizes,
+                              onChange: (String s) {
+                                _selectedSize = s;
+                              },
                             ),
                             const SizedBox(height: 16),
                             const Text(
@@ -153,9 +155,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           _buildPriceWidget(productDetails),
           SizedBox(
             width: 120,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Add to Cart'),
+            child: GetBuilder<AddToCartController>(
+              builder: (addToCartController) {
+                if (addToCartController.inProgress) {
+                  return const CenteredCircularProgressIndicator();
+                }
+
+                return ElevatedButton(
+                  onPressed: () {
+                    CartModel cartModel = CartModel(
+                      productId: widget.productId,
+                      color: _selectedColor ?? '',
+                      size: _selectedSize ?? '',
+                      quantity: _counterValue,
+                    );
+
+                    addToCartController.addToCart(cartModel);
+                  },
+                  child: const Text('Add to Cart'),
+                );
+              },
             ),
           )
         ],

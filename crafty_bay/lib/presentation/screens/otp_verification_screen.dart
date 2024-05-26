@@ -1,6 +1,9 @@
 import 'package:crafty_bay/presentation/screens/complete_profile_screen.dart';
+import 'package:crafty_bay/presentation/state_holders/verify_otp_controller.dart';
 import 'package:crafty_bay/presentation/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/widgets/app_logo.dart';
+import 'package:crafty_bay/presentation/widgets/centered_circular_progress_indicator.dart';
+import 'package:crafty_bay/presentation/widgets/snack_message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -38,12 +41,27 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 const SizedBox(height: 24),
                 _buildPinField(),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.to(() => const CompleteProfileScreen());
-                  },
-                  child: const Text('Next'),
-                ),
+                GetBuilder<VerifyOtpController>(builder: (verifyOtpController) {
+                  if (verifyOtpController.inProgress) {
+                    return const CenteredCircularProgressIndicator();
+                  }
+
+                  return ElevatedButton(
+                    onPressed: () async {
+                      final result = await verifyOtpController.verifyOtp(
+                          widget.email, _otpTEController.text);
+                      if (result) {
+                        Get.to(() => const CompleteProfileScreen());
+                      } else {
+                        if (mounted) {
+                          showSnackMessage(
+                              context, verifyOtpController.errorMessage);
+                        }
+                      }
+                    },
+                    child: const Text('Next'),
+                  );
+                }),
                 const SizedBox(height: 24),
                 _buildResendCodeMessage(),
                 TextButton(

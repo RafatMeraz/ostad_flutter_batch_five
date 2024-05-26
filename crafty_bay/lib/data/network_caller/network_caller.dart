@@ -43,7 +43,7 @@ class NetworkCaller {
     try {
       log(url);
       final Response response = await post(Uri.parse(url),
-          headers: {'accept': 'application/json'}, body: body);
+          headers: {'accept': 'application/json'}, body: jsonEncode(body));
       log(response.statusCode.toString());
       log(response.body.toString());
       if (response.statusCode == 200) {
