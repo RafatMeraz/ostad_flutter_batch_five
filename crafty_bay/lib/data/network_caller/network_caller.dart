@@ -3,14 +3,23 @@ import 'dart:developer';
 
 import 'package:crafty_bay/data/models/network_response.dart';
 import 'package:crafty_bay/presentation/screens/email_verification_screen.dart';
+import 'package:crafty_bay/presentation/state_holders/user_auth_controller.dart';
 import 'package:get/get.dart' as getx;
 import 'package:http/http.dart';
 
 class NetworkCaller {
-  static Future<NetworkResponse> getRequest({required String url}) async {
+  static Future<NetworkResponse> getRequest(
+      {required String url, bool fromAuth = false}) async {
     try {
       log(url);
-      final Response response = await get(Uri.parse(url));
+      log(UserAuthController.accessToken);
+      final Response response = await get(
+        Uri.parse(url),
+        headers: {
+          'accept': 'application/json',
+          'token': UserAuthController.accessToken
+        },
+      );
       log(response.statusCode.toString());
       log(response.body.toString());
       if (response.statusCode == 200) {
@@ -20,7 +29,9 @@ class NetworkCaller {
             isSuccess: true,
             responseData: decodedData);
       } else if (response.statusCode == 401) {
-        _goToSignInScreen();
+        if (!fromAuth) {
+          _goToSignInScreen();
+        }
         return NetworkResponse(
           responseCode: response.statusCode,
           isSuccess: false,
@@ -42,8 +53,13 @@ class NetworkCaller {
       {required String url, Map<String, dynamic>? body}) async {
     try {
       log(url);
+      log(UserAuthController.accessToken);
       final Response response = await post(Uri.parse(url),
-          headers: {'accept': 'application/json'}, body: jsonEncode(body));
+          headers: {
+            'accept': 'application/json',
+            'token': UserAuthController.accessToken
+          },
+          body: jsonEncode(body));
       log(response.statusCode.toString());
       log(response.body.toString());
       if (response.statusCode == 200) {

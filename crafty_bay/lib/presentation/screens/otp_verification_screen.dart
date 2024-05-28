@@ -51,6 +51,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       final result = await verifyOtpController.verifyOtp(
                           widget.email, _otpTEController.text);
                       if (result) {
+                        // TODO: Pending in next 30th May, 2024
+                        // 1. If success, then call another api named "readProfile"
+                         //   a. Create Read profile controller
+                        // 2. check if data is "null" or not, if null then move to the
+                        //    Complete profile screen, then move to home page
+                        //    a. Create complete profile controller
+                        // 3. Otherwise back to the home page
                         Get.to(() => const CompleteProfileScreen());
                       } else {
                         if (mounted) {

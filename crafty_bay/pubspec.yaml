@@ -19,6 +19,7 @@ dependencies:
   item_count_number_button: ^1.0.0
   http: ^1.2.0
   cached_network_image: ^3.3.1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

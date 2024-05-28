@@ -1,4 +1,5 @@
 import 'package:crafty_bay/presentation/screens/main_bottom_nav_bar_screen.dart';
+import 'package:crafty_bay/presentation/state_holders/user_auth_controller.dart';
 import 'package:crafty_bay/presentation/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _moveToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
+    await UserAuthController.getUserToken();
     Get.off(() => const MainBottomNavBarScreen());
   }
 
