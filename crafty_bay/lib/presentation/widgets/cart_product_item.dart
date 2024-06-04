@@ -1,7 +1,9 @@
 import 'package:crafty_bay/data/models/cart_item.dart';
+import 'package:crafty_bay/presentation/state_holders/cart_list_controller.dart';
 import 'package:crafty_bay/presentation/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/utility/assets_path.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:item_count_number_button/item_count_number_button.dart';
 
 class CartProductItem extends StatefulWidget {
@@ -14,7 +16,13 @@ class CartProductItem extends StatefulWidget {
 }
 
 class _CartProductItemState extends State<CartProductItem> {
-  int _counterValue = 1;
+  late int _counterValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _counterValue = widget.cartItem.qty!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,9 +103,10 @@ class _CartProductItemState extends State<CartProductItem> {
       decimalPlaces: 0,
       color: AppColors.primaryColor,
       onChanged: (value) {
-        print(value);
         _counterValue = value as int;
         setState(() {});
+        Get.find<CartListController>()
+            .changeProductQuantity(widget.cartItem.id!, _counterValue);
       },
     );
   }

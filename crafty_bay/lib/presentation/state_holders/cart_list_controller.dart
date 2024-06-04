@@ -37,10 +37,38 @@ class CartListController extends GetxController {
   double get totalPrice {
     double total = 0;
     for (CartItemModel cartItem in _cartList) {
-      total += (double.tryParse(cartItem.qty ?? '1') ?? 1) *
+      total += (cartItem.qty!) *
           (double.tryParse(cartItem.product?.price ?? '0') ?? 0);
     }
 
     return total;
+  }
+
+  void changeProductQuantity(int cartId, int quantity) {
+    _cartList.firstWhere((c) => c.id == cartId).qty = quantity;
+    update();
+  }
+
+  void _deleteCartItem(int cartId) {
+    _cartList.removeWhere((c) => c.id == cartId);
+  }
+
+  Future<bool> deleteCartItem(int cartId) async {
+    // TODO: call api to remove the cart item
+    bool isSuccess = false;
+    _inProgress = true;
+    update();
+    final NetworkResponse response = await NetworkCaller.getRequest(
+      url: Urls.getWishList, // TODO: Change url
+    );
+    if (response.isSuccess) {
+      _deleteCartItem(cartId);
+      isSuccess = true;
+    } else {
+      _errorMessage = response.errorMessage;
+    }
+    _inProgress = false;
+    update();
+    return isSuccess;
   }
 }
