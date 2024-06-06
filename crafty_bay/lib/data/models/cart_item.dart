@@ -30,7 +30,7 @@ class CartItemModel {
     productId = json['product_id'];
     color = json['color'];
     size = json['size'];
-    qty = int.tryParse(json['qty']) ?? 1;
+    qty = int.tryParse(json['qty'] ?? '') ?? 1;
     price = json['price'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
