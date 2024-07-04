@@ -20,3 +20,11 @@ Assignment(*):
 4. delete wishlist
 5. complete profile
 */
+
+/* Steps for release an app
+- JKS
+- key.properties
+- gradle key mapping
+- build aab
+- upload in google play console
+ */
